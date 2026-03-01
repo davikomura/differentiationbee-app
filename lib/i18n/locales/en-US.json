@@ -1,0 +1,30 @@
+{
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Access your account to continue.",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "your.username",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "********",
+      "button": "Sign in",
+
+      "show": "Show",
+      "hide": "Hide",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+
+      "forgotPassword": "Forgot password?",
+      "createAccount": "Create account",
+
+      "alerts": {
+        "successTitle": "Login successful",
+        "successMessage": "You have been authenticated successfully."
+      },
+      "errors": {
+        "requiredFields": "Please enter username and password.",
+        "invalidCredentials": "Unable to sign in. Check your credentials."
+      }
+    }
+  }
+}

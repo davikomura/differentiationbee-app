@@ -1,4 +1,5 @@
-import { apiRequest } from '@/services/api';
+// services/health.ts
+import api from "./api";
 
 export type HealthResponse = {
   status?: string;
@@ -7,5 +8,5 @@ export type HealthResponse = {
 };
 
 export function getHealth() {
-  return apiRequest<HealthResponse>('/health');
+  return api.get<HealthResponse>("/healthz");
 }

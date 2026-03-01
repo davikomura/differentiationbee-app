@@ -1,0 +1,30 @@
+{
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "subtitle": "Accede a tu cuenta para continuar.",
+      "usernameLabel": "Usuario",
+      "usernamePlaceholder": "tu.usuario",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "********",
+      "button": "Iniciar sesión",
+
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
+
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "createAccount": "Crear cuenta",
+
+      "alerts": {
+        "successTitle": "Inicio de sesión exitoso",
+        "successMessage": "Has sido autenticado correctamente."
+      },
+      "errors": {
+        "requiredFields": "Por favor, ingresa usuario y contraseña.",
+        "invalidCredentials": "No se pudo iniciar sesión. Verifica tus credenciales."
+      }
+    }
+  }
+}

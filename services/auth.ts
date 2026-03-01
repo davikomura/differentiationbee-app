@@ -1,31 +1,49 @@
-import { apiRequest } from '@/services/api';
+// services/auth.ts
+import api from "./api";
 
 type LoginPayload = {
-  email: string;
+  username: string;
   password: string;
 };
 
-type LoginResponseShape = {
-  access_token?: string;
-  token?: string;
-  data?: {
-    access_token?: string;
-    token?: string;
-  };
+export type TokenPair = {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
 };
 
+type RefreshPayload = {
+  refresh_token: string;
+};
+
+export async function loginWithTokens(
+  payload: LoginPayload,
+): Promise<TokenPair> {
+  const { data } = await api.post<TokenPair>("/auth/login", payload);
+  return data;
+}
+
 export async function login(payload: LoginPayload): Promise<string> {
-  const response = await apiRequest<LoginResponseShape>('/auth/login', {
-    method: 'POST',
-    body: payload,
-  });
+  const { access_token } = await loginWithTokens(payload);
 
-  const token =
-    response.access_token ?? response.token ?? response.data?.access_token ?? response.data?.token;
-
-  if (!token) {
-    throw new Error('Login succeeded but no token was returned by the API.');
+  if (!access_token) {
+    throw new Error("Login succeeded but no token was returned by the API.");
   }
 
-  return token;
+  return access_token;
+}
+
+export async function refreshToken(
+  payload: RefreshPayload,
+): Promise<TokenPair> {
+  const { data } = await api.post<TokenPair>("/auth/refresh", payload);
+  return data;
+}
+
+export async function logout(payload: RefreshPayload) {
+  return api.post("/auth/logout", payload);
+}
+
+export async function getMe() {
+  return api.get("/auth/me");
 }

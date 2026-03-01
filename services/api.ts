@@ -1,58 +1,30 @@
-const API_URL = process.env.EXPO_PUBLIC_API_URL?.trim() || 'http://localhost:8000';
+// services/api.ts
+import axios from "axios";
+import { Platform } from "react-native";
 
-export class ApiError extends Error {
-  status: number;
+const envBaseURL = process.env.EXPO_PUBLIC_API_URL?.trim();
+const fallbackHost = Platform.select({
+  android: "10.0.2.2",
+  default: "localhost",
+});
+const fallbackBaseURL = `http://${fallbackHost}:8000`;
+const baseURL =
+  envBaseURL && /^https?:\/\//i.test(envBaseURL) ? envBaseURL : fallbackBaseURL;
 
-  constructor(message: string, status: number) {
-    super(message);
-    this.name = 'ApiError';
-    this.status = status;
-  }
+const api = axios.create({
+  baseURL,
+  timeout: 30000,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+export function setAuthToken(token: string) {
+  api.defaults.headers.common.Authorization = `Bearer ${token}`;
 }
 
-type RequestOptions = {
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  body?: unknown;
-  headers?: Record<string, string>;
-  token?: string;
-};
-
-export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { method = 'GET', body, headers = {}, token } = options;
-  const response = await fetch(`${API_URL}${path}`, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...headers,
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-
-  const raw = await response.text();
-  let data: unknown = null;
-  if (raw) {
-    try {
-      data = JSON.parse(raw);
-    } catch {
-      data = raw;
-    }
-  }
-
-  if (!response.ok) {
-    const message =
-      (typeof data === 'object' &&
-        data !== null &&
-        'detail' in data &&
-        typeof (data as { detail: unknown }).detail === 'string' &&
-        (data as { detail: string }).detail) ||
-      (typeof data === 'string' && data) ||
-      `Request failed with status ${response.status}`;
-
-    throw new ApiError(message, response.status);
-  }
-
-  return data as T;
+export function clearAuthToken() {
+  delete api.defaults.headers.common.Authorization;
 }
 
-export { API_URL };
+export default api;
