@@ -1,7 +1,5 @@
 // app/(auth)/login.tsx
-import { setAuthToken } from "@/services/api";
-import { loginWithTokens } from "@/services/auth";
-import { router } from "expo-router";
+import { signIn } from "@/services/authSession";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -65,14 +63,8 @@ export default function AuthLoginScreen() {
     setFormError(null);
 
     try {
-      const tokens = await loginWithTokens({
-        username: normalizedUsername,
-        password,
-      });
-
-      setAuthToken(tokens.access_token);
-
-      router.replace("/(tabs)");
+      await signIn(normalizedUsername, password);
+      // router.replace("/(tabs)");
     } catch (error: any) {
       setFormError(t("auth.login.errors.invalidCredentials"));
     } finally {
@@ -231,7 +223,7 @@ export default function AuthLoginScreen() {
           <View className="mt-4 flex-row items-center justify-between">
             <Pressable
               disabled={loading}
-              onPress={() => router.push("/(auth)/forgot-password")}
+              // onPress={() => router.push("/(auth)/forgot-password")}
               className="rounded-xl px-2 py-2"
             >
               <Text className="text-sm font-medium text-zinc-300">
@@ -241,7 +233,7 @@ export default function AuthLoginScreen() {
 
             <Pressable
               disabled={loading}
-              onPress={() => router.push("/(auth)/register")}
+              // onPress={() => router.push("/(auth)/register")}
               className="rounded-xl px-2 py-2"
             >
               <Text className="text-sm font-semibold text-emerald-400">
