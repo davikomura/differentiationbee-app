@@ -24,7 +24,6 @@ export default function AuthLoginScreen() {
 
   const [loading, setLoading] = useState(false);
 
-  // Erros “por campo” (mais UX do que 1 erro genérico)
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -73,11 +72,8 @@ export default function AuthLoginScreen() {
 
       setAuthToken(tokens.access_token);
 
-      // Em apps “senior”, geralmente não mostra Alert de sucesso no login.
-      // Só navega. Se quiser manter, re-adicione.
       router.replace("/(tabs)");
     } catch (error: any) {
-      // Aqui você pode diferenciar 401 vs erro de rede etc.
       setFormError(t("auth.login.errors.invalidCredentials"));
     } finally {
       setLoading(false);
@@ -94,7 +90,6 @@ export default function AuthLoginScreen() {
         contentContainerClassName="flex-grow justify-center px-6 py-10"
         keyboardShouldPersistTaps="handled"
       >
-        {/* Top header (fora do card) */}
         <View className="mb-6">
           <Text className="text-4xl font-extrabold text-white">
             {t("auth.login.title")}
@@ -104,9 +99,7 @@ export default function AuthLoginScreen() {
           </Text>
         </View>
 
-        {/* Card */}
         <View className="rounded-3xl border border-zinc-800/80 bg-zinc-900/60 p-5">
-          {/* Username */}
           <View className="mb-4">
             <Text className="mb-2 text-sm font-medium text-zinc-200">
               {t("auth.login.usernameLabel")}
@@ -143,14 +136,10 @@ export default function AuthLoginScreen() {
             {usernameError ? (
               <Text className="mt-2 text-sm text-red-400">{usernameError}</Text>
             ) : (
-              <Text className="mt-2 text-xs text-zinc-500">
-                {/* hint opcional — pode trocar por um t("...") */}
-                {/* Ex.: "Use seu usuário cadastrado." */}
-              </Text>
+              <Text className="mt-2 text-xs text-zinc-500"></Text>
             )}
           </View>
 
-          {/* Password */}
           <View className="mb-3">
             <Text className="mb-2 text-sm font-medium text-zinc-200">
               {t("auth.login.passwordLabel")}
@@ -189,16 +178,15 @@ export default function AuthLoginScreen() {
                 accessibilityRole="button"
                 accessibilityLabel={
                   showPassword
-                    ? t("auth.login.hidePassword") // adicione no i18n
-                    : t("auth.login.showPassword") // adicione no i18n
+                    ? t("auth.login.hidePassword")
+                    : t("auth.login.showPassword")
                 }
                 className="ml-3 rounded-xl px-3 py-2"
               >
                 <Text className="text-sm font-semibold text-zinc-300">
                   {showPassword
-                    ? t("auth.login.hide") // adicione no i18n
+                    ? t("auth.login.hide")
                     : t("auth.login.show")}{" "}
-                  {/* curto, “Mostrar/Ocultar” */}
                 </Text>
               </Pressable>
             </View>
@@ -208,7 +196,6 @@ export default function AuthLoginScreen() {
             ) : null}
           </View>
 
-          {/* Form error (credenciais inválidas / rede) */}
           {formError ? (
             <View className="mb-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3">
               <Text className="text-sm text-red-200">{formError}</Text>
@@ -217,7 +204,6 @@ export default function AuthLoginScreen() {
             <View className="mb-4" />
           )}
 
-          {/* CTA */}
           <Pressable
             className={[
               "h-12 items-center justify-center rounded-2xl",
@@ -242,7 +228,6 @@ export default function AuthLoginScreen() {
             )}
           </Pressable>
 
-          {/* Footer actions (opcionais) */}
           <View className="mt-4 flex-row items-center justify-between">
             <Pressable
               disabled={loading}
@@ -250,7 +235,7 @@ export default function AuthLoginScreen() {
               className="rounded-xl px-2 py-2"
             >
               <Text className="text-sm font-medium text-zinc-300">
-                {t("auth.login.forgotPassword")} {/* adicione no i18n */}
+                {t("auth.login.forgotPassword")}
               </Text>
             </Pressable>
 
@@ -260,16 +245,13 @@ export default function AuthLoginScreen() {
               className="rounded-xl px-2 py-2"
             >
               <Text className="text-sm font-semibold text-emerald-400">
-                {t("auth.login.createAccount")} {/* adicione no i18n */}
+                {t("auth.login.createAccount")}
               </Text>
             </Pressable>
           </View>
         </View>
 
-        {/* Pequeno rodapé de marca (opcional) */}
-        <Text className="mt-6 text-center text-xs text-zinc-600">
-          {/* Ex.: t("auth.login.footer") */}
-        </Text>
+        <Text className="mt-6 text-center text-xs text-zinc-600"></Text>
       </ScrollView>
     </KeyboardAvoidingView>
   );
