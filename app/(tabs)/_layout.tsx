@@ -1,31 +1,18 @@
 // app/(tabs)/_layout.tsx
 import { Ionicons } from "@expo/vector-icons";
+import { AppTabBar } from "@/components/navigation/AppTabBar";
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#19D3FF",
-        tabBarInactiveTintColor: "#70819C",
-        tabBarStyle: {
-          backgroundColor: "#08111F",
-          borderTopWidth: 0,
-          height: 64 + insets.bottom,
-          paddingTop: 8,
-          paddingBottom: Math.max(insets.bottom, 10),
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: "700",
-        },
       }}
+      tabBar={(props) => <AppTabBar {...props} />}
     >
       <Tabs.Screen
         name="home"
