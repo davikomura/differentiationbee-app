@@ -1,9 +1,11 @@
 // app/(auth)/login.tsx
 import { signIn } from "@/services/authSession";
+import { useRouter } from "expo-router";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
+  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -16,10 +18,10 @@ import {
 
 export default function AuthLoginScreen() {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   const [usernameError, setUsernameError] = useState<string | null>(null);
@@ -27,6 +29,9 @@ export default function AuthLoginScreen() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState<
+    "username" | "password" | null
+  >(null);
 
   const passwordRef = useRef<TextInput>(null);
 
@@ -34,22 +39,26 @@ export default function AuthLoginScreen() {
     return username.trim().length > 0 && password.length > 0 && !loading;
   }, [username, password, loading]);
 
+  const GOLD = "#F7C948";
+  const CYAN = "#19D3FF";
+
   function validate() {
-    const u = username.trim();
     let ok = true;
 
     setUsernameError(null);
     setPasswordError(null);
     setFormError(null);
 
-    if (!u) {
+    if (!username.trim()) {
       setUsernameError(t("auth.login.errors.requiredFields"));
       ok = false;
     }
+
     if (!password) {
       setPasswordError(t("auth.login.errors.requiredFields"));
       ok = false;
     }
+
     return ok;
   }
 
@@ -57,194 +66,185 @@ export default function AuthLoginScreen() {
     Keyboard.dismiss();
     if (!validate()) return;
 
-    const normalizedUsername = username.trim();
-
     setLoading(true);
-    setFormError(null);
-
     try {
-      await signIn(normalizedUsername, password);
-      // router.replace("/(tabs)");
-    } catch (error: any) {
+      await signIn(username.trim(), password);
+      router.replace("/(tabs)/home");
+    } catch {
       setFormError(t("auth.login.errors.invalidCredentials"));
     } finally {
       setLoading(false);
     }
   }
 
+  const borderFor = (field: "username" | "password", hasError: boolean) => {
+    if (hasError) return "border-red-500/70";
+    if (focusedField === field) return "border-cyan-400/80";
+    return "border-zinc-800/80";
+  };
+
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-zinc-950"
+      className="flex-1 bg-black"
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <ScrollView
+      <ImageBackground
+        source={require("@/assets/auth/login-bg.png")}
+        resizeMode="cover"
         className="flex-1"
-        contentContainerClassName="flex-grow justify-center px-6 py-10"
-        keyboardShouldPersistTaps="handled"
       >
-        <View className="mb-6">
-          <Text className="text-4xl font-extrabold text-white">
-            {t("auth.login.title")}
-          </Text>
-          <Text className="mt-2 text-base leading-6 text-zinc-400">
-            {t("auth.login.subtitle")}
-          </Text>
-        </View>
+        <View className="absolute inset-0 bg-black/70" />
 
-        <View className="rounded-3xl border border-zinc-800/80 bg-zinc-900/60 p-5">
-          <View className="mb-4">
-            <Text className="mb-2 text-sm font-medium text-zinc-200">
-              {t("auth.login.usernameLabel")}
+        <ScrollView
+          contentContainerClassName="flex-grow justify-center px-6 py-10"
+          keyboardShouldPersistTaps="handled"
+        >
+          <View className="mb-10 items-start">
+            <Text className="text-4xl font-extrabold text-white tracking-tight">
+              {t("auth.login.title")}
             </Text>
 
-            <View
-              className={[
-                "rounded-2xl border bg-zinc-900 px-4 py-3",
-                usernameError ? "border-red-500/70" : "border-zinc-800",
-                loading ? "opacity-70" : "",
-              ].join(" ")}
-            >
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                editable={!loading}
-                onChangeText={(v) => {
-                  setUsername(v);
-                  if (usernameError) setUsernameError(null);
-                  if (formError) setFormError(null);
-                }}
-                placeholder={t("auth.login.usernamePlaceholder")}
-                placeholderTextColor="#71717a"
-                value={username}
-                className="text-base text-white"
-                returnKeyType="next"
-                onSubmitEditing={() => passwordRef.current?.focus()}
-                textContentType="username"
-                autoComplete="username"
-                accessibilityLabel={t("auth.login.usernameLabel")}
-              />
-            </View>
-
-            {usernameError ? (
-              <Text className="mt-2 text-sm text-red-400">{usernameError}</Text>
-            ) : (
-              <Text className="mt-2 text-xs text-zinc-500"></Text>
-            )}
-          </View>
-
-          <View className="mb-3">
-            <Text className="mb-2 text-sm font-medium text-zinc-200">
-              {t("auth.login.passwordLabel")}
+            <Text className="mt-3 max-w-[320px] text-base leading-6 text-zinc-300">
+              {t("auth.login.subtitle")}
             </Text>
-
-            <View
-              className={[
-                "flex-row items-center rounded-2xl border bg-zinc-900 px-4 py-3",
-                passwordError ? "border-red-500/70" : "border-zinc-800",
-                loading ? "opacity-70" : "",
-              ].join(" ")}
-            >
-              <TextInput
-                ref={passwordRef}
-                editable={!loading}
-                onChangeText={(v) => {
-                  setPassword(v);
-                  if (passwordError) setPasswordError(null);
-                  if (formError) setFormError(null);
-                }}
-                placeholder={t("auth.login.passwordPlaceholder")}
-                placeholderTextColor="#71717a"
-                secureTextEntry={!showPassword}
-                value={password}
-                className="flex-1 text-base text-white"
-                returnKeyType="go"
-                onSubmitEditing={handleLogin}
-                textContentType="password"
-                autoComplete="password"
-                accessibilityLabel={t("auth.login.passwordLabel")}
-              />
-
-              <Pressable
-                onPress={() => setShowPassword((s) => !s)}
-                disabled={loading}
-                accessibilityRole="button"
-                accessibilityLabel={
-                  showPassword
-                    ? t("auth.login.hidePassword")
-                    : t("auth.login.showPassword")
-                }
-                className="ml-3 rounded-xl px-3 py-2"
-              >
-                <Text className="text-sm font-semibold text-zinc-300">
-                  {showPassword
-                    ? t("auth.login.hide")
-                    : t("auth.login.show")}{" "}
-                </Text>
-              </Pressable>
-            </View>
-
-            {passwordError ? (
-              <Text className="mt-2 text-sm text-red-400">{passwordError}</Text>
-            ) : null}
           </View>
 
-          {formError ? (
-            <View className="mb-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3">
-              <Text className="text-sm text-red-200">{formError}</Text>
-            </View>
-          ) : (
-            <View className="mb-4" />
-          )}
-
-          <Pressable
-            className={[
-              "h-12 items-center justify-center rounded-2xl",
-              canSubmit ? "bg-emerald-500" : "bg-zinc-800",
-            ].join(" ")}
-            disabled={!canSubmit}
-            onPress={handleLogin}
-            accessibilityRole="button"
-            accessibilityLabel={t("auth.login.button")}
+          <View
+            className="rounded-[28px] border border-white/10 bg-black/55 p-6"
+            style={{
+              backdropFilter: "blur(8px)",
+              shadowColor: "#000",
+              shadowOpacity: 0.6,
+              shadowRadius: 24,
+              elevation: 18,
+            }}
           >
-            {loading ? (
-              <ActivityIndicator />
-            ) : (
-              <Text
+            <View className="mb-5">
+              <Text className="mb-2 text-sm font-semibold text-zinc-200">
+                {t("auth.login.usernameLabel")}
+              </Text>
+
+              <View
                 className={[
-                  "text-base font-semibold",
-                  canSubmit ? "text-zinc-900" : "text-zinc-400",
+                  "rounded-2xl border bg-black/70 px-4 py-3",
+                  borderFor("username", !!usernameError),
                 ].join(" ")}
               >
-                {t("auth.login.button")}
-              </Text>
-            )}
-          </Pressable>
+                <TextInput
+                  value={username}
+                  editable={!loading}
+                  autoCapitalize="none"
+                  placeholder={t("auth.login.usernamePlaceholder")}
+                  placeholderTextColor="#94A3B8"
+                  className="text-base text-white"
+                  onFocus={() => setFocusedField("username")}
+                  onBlur={() => setFocusedField(null)}
+                  onChangeText={(v) => {
+                    setUsername(v);
+                    setUsernameError(null);
+                    setFormError(null);
+                  }}
+                  returnKeyType="next"
+                  onSubmitEditing={() => passwordRef.current?.focus()}
+                />
+              </View>
 
-          <View className="mt-4 flex-row items-center justify-between">
+              {usernameError && (
+                <Text className="mt-2 text-sm text-red-400">
+                  {usernameError}
+                </Text>
+              )}
+            </View>
+
+            <View className="mb-5">
+              <Text className="mb-2 text-sm font-semibold text-zinc-200">
+                {t("auth.login.passwordLabel")}
+              </Text>
+
+              <View
+                className={[
+                  "flex-row items-center rounded-2xl border bg-black/70 px-4 py-3",
+                  borderFor("password", !!passwordError),
+                ].join(" ")}
+              >
+                <TextInput
+                  ref={passwordRef}
+                  value={password}
+                  editable={!loading}
+                  secureTextEntry={!showPassword}
+                  placeholder={t("auth.login.passwordPlaceholder")}
+                  placeholderTextColor="#94A3B8"
+                  className="flex-1 text-base text-white"
+                  onFocus={() => setFocusedField("password")}
+                  onBlur={() => setFocusedField(null)}
+                  onChangeText={(v) => {
+                    setPassword(v);
+                    setPasswordError(null);
+                    setFormError(null);
+                  }}
+                  returnKeyType="go"
+                  onSubmitEditing={handleLogin}
+                />
+
+                <Pressable onPress={() => setShowPassword((s) => !s)}>
+                  <Text
+                    className="text-sm font-semibold"
+                    style={{ color: CYAN }}
+                  >
+                    {showPassword ? t("auth.login.hide") : t("auth.login.show")}
+                  </Text>
+                </Pressable>
+              </View>
+
+              {passwordError && (
+                <Text className="mt-2 text-sm text-red-400">
+                  {passwordError}
+                </Text>
+              )}
+            </View>
+
+            {formError && (
+              <View className="mb-4 rounded-2xl border border-red-500/30 bg-red-500/10 p-3">
+                <Text className="text-sm text-red-200">{formError}</Text>
+              </View>
+            )}
+
             <Pressable
-              disabled={loading}
-              // onPress={() => router.push("/(auth)/forgot-password")}
-              className="rounded-xl px-2 py-2"
+              disabled={!canSubmit}
+              onPress={handleLogin}
+              className="h-12 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: canSubmit ? GOLD : "#27272A",
+                shadowColor: canSubmit ? CYAN : "transparent",
+                shadowOpacity: 0.5,
+                shadowRadius: 18,
+                elevation: canSubmit ? 14 : 0,
+              }}
             >
-              <Text className="text-sm font-medium text-zinc-300">
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
+                <Text
+                  className="text-base font-extrabold tracking-wide"
+                  style={{ color: canSubmit ? "#0B0F17" : "#A1A1AA" }}
+                >
+                  {t("auth.login.button")}
+                </Text>
+              )}
+            </Pressable>
+
+            <View className="mt-5 flex-row justify-between">
+              <Text className="text-sm text-zinc-300">
                 {t("auth.login.forgotPassword")}
               </Text>
-            </Pressable>
 
-            <Pressable
-              disabled={loading}
-              // onPress={() => router.push("/(auth)/register")}
-              className="rounded-xl px-2 py-2"
-            >
-              <Text className="text-sm font-semibold text-emerald-400">
+              <Text className="text-sm font-extrabold" style={{ color: CYAN }}>
                 {t("auth.login.createAccount")}
               </Text>
-            </Pressable>
+            </View>
           </View>
-        </View>
-
-        <Text className="mt-6 text-center text-xs text-zinc-600"></Text>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 }

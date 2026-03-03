@@ -26,5 +26,66 @@
         "invalidCredentials": "No se pudo iniciar sesión. Verifica tus credenciales."
       }
     }
+  },
+  "home": {
+    "header": {
+      "kicker": "Panel",
+      "greeting": "Bienvenido de nuevo, {{name}}",
+      "fallbackName": "jugador",
+      "subtitle": "Tu proximo desafio ya esta listo. Revisa tu progreso y vuelve a la arena."
+    },
+    "stats": {
+      "points": "Puntos totales",
+      "noTier": "Tier no disponible"
+    },
+    "daily": {
+      "title": "Desafio diario",
+      "level": "Nivel {{level}}",
+      "date": "Disponible el {{date}}",
+      "empty": "No hay desafio diario disponible ahora."
+    },
+    "actions": {
+      "signOut": "Salir",
+      "playNow": "Modo practica",
+      "playHint": "Este boton ya queda listo para el siguiente paso: iniciar una sesion con el backend.",
+      "startSession": "Empezar ahora"
+    },
+    "ranking": {
+      "title": "Ranking global",
+      "empty": "Aun no hay datos de ranking."
+    },
+    "statsCard": {
+      "title": "Tu rendimiento",
+      "sessions": "Sesiones",
+      "attempts": "Intentos",
+      "accuracy": "Precision",
+      "score": "Puntuacion"
+    },
+    "errors": {
+      "loadFailed": "No se pudo cargar tu pantalla principal."
+    }
+  },
+  "tabs": {
+    "home": "Inicio",
+    "leaderboard": "Ranking",
+    "stats": "Stats"
+  },
+  "leaderboardScreen": {
+    "title": "Ranking global",
+    "subtitle": "Sigue a quienes lideran la competicion.",
+    "empty": "Aun no hay datos de ranking.",
+    "error": "No se pudo cargar el ranking ahora."
+  },
+  "statsScreen": {
+    "title": "Tus stats",
+    "subtitle": "Una vista rapida de tu rendimiento actual.",
+    "sessions": "Total de sesiones",
+    "attempts": "Total de intentos",
+    "correct": "Respuestas correctas",
+    "accuracy": "Precision",
+    "bestScore": "Mejor puntuacion",
+    "avgTime": "Tiempo promedio",
+    "empty": "Aun no hay stats disponibles.",
+    "error": "No se pudieron cargar tus stats ahora."
   }
 }

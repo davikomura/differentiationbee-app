@@ -26,5 +26,66 @@
         "invalidCredentials": "Unable to sign in. Check your credentials."
       }
     }
+  },
+  "home": {
+    "header": {
+      "kicker": "Dashboard",
+      "greeting": "Welcome back, {{name}}",
+      "fallbackName": "player",
+      "subtitle": "Your next challenge is ready. Check your progress and jump back into the arena."
+    },
+    "stats": {
+      "points": "Total points",
+      "noTier": "Tier unavailable"
+    },
+    "daily": {
+      "title": "Daily challenge",
+      "level": "Level {{level}}",
+      "date": "Available on {{date}}",
+      "empty": "No daily challenge is available right now."
+    },
+    "actions": {
+      "signOut": "Sign out",
+      "playNow": "Practice mode",
+      "playHint": "This button is already in place for the next step: starting a session with the backend.",
+      "startSession": "Start now"
+    },
+    "ranking": {
+      "title": "Global ranking",
+      "empty": "No ranking data available yet."
+    },
+    "statsCard": {
+      "title": "Your performance",
+      "sessions": "Sessions",
+      "attempts": "Attempts",
+      "accuracy": "Accuracy",
+      "score": "Score"
+    },
+    "errors": {
+      "loadFailed": "Unable to load your home data right now."
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "leaderboard": "Ranking",
+    "stats": "Stats"
+  },
+  "leaderboardScreen": {
+    "title": "Global ranking",
+    "subtitle": "Track who is leading the competition.",
+    "empty": "No ranking data available yet.",
+    "error": "Unable to load the ranking right now."
+  },
+  "statsScreen": {
+    "title": "Your stats",
+    "subtitle": "A quick view of your current performance.",
+    "sessions": "Total sessions",
+    "attempts": "Total attempts",
+    "correct": "Correct answers",
+    "accuracy": "Accuracy",
+    "bestScore": "Best score",
+    "avgTime": "Average time",
+    "empty": "No stats available yet.",
+    "error": "Unable to load your stats right now."
   }
 }

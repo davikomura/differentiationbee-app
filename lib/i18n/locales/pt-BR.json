@@ -26,5 +26,66 @@
         "invalidCredentials": "Não foi possível entrar. Verifique suas credenciais."
       }
     }
+  },
+  "home": {
+    "header": {
+      "kicker": "Painel",
+      "greeting": "Bem-vindo de volta, {{name}}",
+      "fallbackName": "jogador",
+      "subtitle": "Seu proximo desafio ja esta pronto. Veja seu progresso e volte para a arena."
+    },
+    "stats": {
+      "points": "Pontos totais",
+      "noTier": "Tier indisponivel"
+    },
+    "daily": {
+      "title": "Desafio diario",
+      "level": "Nivel {{level}}",
+      "date": "Disponivel em {{date}}",
+      "empty": "Nenhum desafio diario esta disponivel agora."
+    },
+    "actions": {
+      "signOut": "Sair",
+      "playNow": "Modo pratica",
+      "playHint": "Esse botao ja fica pronto para o proximo passo: iniciar uma sessao com o backend.",
+      "startSession": "Comecar agora"
+    },
+    "ranking": {
+      "title": "Ranking global",
+      "empty": "Nenhum dado de ranking disponivel ainda."
+    },
+    "statsCard": {
+      "title": "Seu desempenho",
+      "sessions": "Sessoes",
+      "attempts": "Tentativas",
+      "accuracy": "Precisao",
+      "score": "Pontuacao"
+    },
+    "errors": {
+      "loadFailed": "Nao foi possivel carregar sua home agora."
+    }
+  },
+  "tabs": {
+    "home": "Inicio",
+    "leaderboard": "Ranking",
+    "stats": "Stats"
+  },
+  "leaderboardScreen": {
+    "title": "Ranking global",
+    "subtitle": "Acompanhe quem esta liderando a competicao.",
+    "empty": "Nenhum dado de ranking disponivel ainda.",
+    "error": "Nao foi possivel carregar o ranking agora."
+  },
+  "statsScreen": {
+    "title": "Suas stats",
+    "subtitle": "Uma visao rapida do seu desempenho atual.",
+    "sessions": "Total de sessoes",
+    "attempts": "Total de tentativas",
+    "correct": "Respostas corretas",
+    "accuracy": "Precisao",
+    "bestScore": "Melhor pontuacao",
+    "avgTime": "Tempo medio",
+    "empty": "Nenhuma stat disponivel ainda.",
+    "error": "Nao foi possivel carregar suas stats agora."
   }
 }

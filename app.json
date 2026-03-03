@@ -2,6 +2,7 @@
   "expo": {
     "name": "DifferentiationBee",
     "slug": "DifferentiationBee",
+    "icon": "./assets/icon/dbee.png",
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "differentiationbee",
@@ -18,11 +19,7 @@
     "web": {
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-router",
-      "expo-localization",
-      "expo-secure-store"
-    ],
+    "plugins": ["expo-router", "expo-localization", "expo-secure-store"],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
