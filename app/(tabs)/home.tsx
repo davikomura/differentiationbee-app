@@ -1,18 +1,15 @@
 // app/(tabs)/home.tsx
 import { DailyChallengeCard } from "@/components/home/DailyChallengeCard";
-import { LeaderboardCard } from "@/components/home/LeaderboardCard";
 import { StatsGrid } from "@/components/home/StatsGrid";
 import { getDailyChallenge } from "@/services/game";
-import { getGlobalLeaderboard } from "@/services/leaderboard";
 import { getCurrentUser } from "@/services/profile";
 import { getMyStats } from "@/services/stats";
 import { loadTokens } from "@/services/tokenStore";
 import type { DailyChallenge } from "@/types/game";
-import type { LeaderboardEntry } from "@/types/leaderboard";
 import type { CurrentUser } from "@/types/profile";
 import type { MyStats } from "@/types/stats";
 import { useRouter } from "expo-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -27,14 +24,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 type HomeState = {
   user: CurrentUser | null;
   dailyChallenge: DailyChallenge | null;
-  leaderboard: LeaderboardEntry[];
   stats: MyStats | null;
 };
 
 const EMPTY_STATE: HomeState = {
   user: null,
   dailyChallenge: null,
-  leaderboard: [],
   stats: null,
 };
 
@@ -59,14 +54,13 @@ export default function HomeScreen() {
 
       setError(null);
 
-      const [user, dailyChallenge, leaderboard, stats] = await Promise.all([
+      const [user, dailyChallenge, stats] = await Promise.all([
         getCurrentUser(),
         getDailyChallenge(),
-        getGlobalLeaderboard(),
         getMyStats(),
       ]);
 
-      setState({ user, dailyChallenge, leaderboard, stats });
+      setState({ user, dailyChallenge, stats });
     } catch {
       setError(t("home.errors.loadFailed"));
     } finally {
@@ -84,12 +78,7 @@ export default function HomeScreen() {
     await loadHomeData();
   }
 
-  const { user, dailyChallenge, leaderboard, stats } = state;
-
-  const accuracyText = useMemo(() => {
-    if (!stats) return "0%";
-    return `${Math.round(stats.accuracy_pct)}%`;
-  }, [stats]);
+  const { user, dailyChallenge, stats } = state;
 
   if (loading) {
     return (
@@ -133,78 +122,49 @@ export default function HomeScreen() {
         <View className="mt-5 h-px bg-white/10" />
       </View>
 
-      <View className="mb-5 rounded-[28px] border border-white/10 bg-[#10182A] p-5">
-        <View className="flex-row items-center justify-between">
-          <View className="flex-1">
-            <Text className="text-xs font-extrabold uppercase tracking-[2px] text-slate-400">
-              {t("home.stats.points")}
-            </Text>
-
-            <Text className="mt-2 text-[44px] font-black leading-[48px] text-[#F7C948]">
-              {user?.points ?? 0}
-            </Text>
-
-            <View className="mt-3 self-start rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1.5">
-              <Text className="text-[12px] font-extrabold text-cyan-200">
-                {user?.tier?.title ?? t("home.stats.noTier")}
-              </Text>
-            </View>
-          </View>
-
-          <View className="h-16 w-16 rounded-full bg-cyan-400/15" />
-        </View>
-
-        <View className="mt-5 flex-row items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-          <Text className="text-sm font-semibold text-slate-300">
-            {t("home.statsCard.accuracy")}
-          </Text>
-          <Text className="text-sm font-black text-white">{accuracyText}</Text>
-        </View>
-      </View>
-
       <DailyChallengeCard
         t={t}
         dailyChallenge={dailyChallenge}
         onPress={() => {}}
       />
 
-      <View className="mb-5 rounded-[28px] border border-white/10 bg-[#0D1424] p-5">
-        <View className="mb-3 flex-row items-center justify-between">
-          <Text className="text-base font-extrabold text-white">
-            {t("home.actions.playNow")}
+      {!dailyChallenge ? (
+        <View className="mb-5 rounded-[28px] border border-white/10 bg-[#0D1424] p-5">
+          <View className="mb-3 flex-row items-center justify-between">
+            <Text className="text-base font-extrabold text-white">
+              {t("home.actions.playNow")}
+            </Text>
+          </View>
+
+          <Text className="text-sm leading-5 text-slate-300">
+            {t("home.actions.playHint")}
           </Text>
+
+          <View className="mt-4 flex-row gap-3">
+            <Pressable
+              className="h-12 flex-1 items-center justify-center rounded-2xl bg-[#F7C948]"
+              style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
+              onPress={() => {}}
+            >
+              <Text className="text-[15px] font-black text-[#08111F]">
+                {t("home.actions.startSession")}
+              </Text>
+            </Pressable>
+
+            <Pressable
+              className="h-12 w-28 items-center justify-center rounded-2xl border border-white/10 bg-white/5"
+              style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
+              onPress={() => {}}
+            >
+              <Text className="text-[12px] font-extrabold uppercase tracking-[1.5px] text-cyan-300">
+                {t("home.actions.ranked")}
+              </Text>
+            </Pressable>
+          </View>
         </View>
-
-        <Text className="text-sm leading-5 text-slate-300">
-          {t("home.actions.playHint")}
-        </Text>
-
-        <View className="mt-4 flex-row gap-3">
-          <Pressable
-            className="h-12 flex-1 items-center justify-center rounded-2xl bg-[#F7C948]"
-            style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
-            onPress={() => {}}
-          >
-            <Text className="text-[15px] font-black text-[#08111F]">
-              {t("home.actions.startSession")}
-            </Text>
-          </Pressable>
-
-          <Pressable
-            className="h-12 w-28 items-center justify-center rounded-2xl border border-white/10 bg-white/5"
-            style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
-            onPress={() => {}}
-          >
-            <Text className="text-[12px] font-extrabold uppercase tracking-[1.5px] text-cyan-300">
-              Ranked
-            </Text>
-          </Pressable>
-        </View>
-      </View>
+      ) : null}
 
       <StatsGrid t={t} stats={stats} />
-
-      <LeaderboardCard t={t} leaderboard={leaderboard} />
 
       {error ? (
         <View className="mt-5 rounded-2xl border border-red-500/30 bg-red-500/10 p-4">

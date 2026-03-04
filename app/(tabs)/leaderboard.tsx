@@ -87,7 +87,7 @@ export default function LeaderboardScreen() {
               </Text>
             </View>
             <Text className="text-base font-extrabold text-[#F7C948]">
-              {entry.points} pts
+              {t("leaderboardScreen.points", { points: entry.points })}
             </Text>
           </View>
         ))

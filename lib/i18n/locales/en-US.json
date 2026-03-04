@@ -48,11 +48,14 @@
       "signOut": "Sign out",
       "playNow": "Practice mode",
       "playHint": "This button is already in place for the next step: starting a session with the backend.",
-      "startSession": "Start now"
+      "startSession": "Start now",
+      "ranked": "Ranked"
     },
     "ranking": {
       "title": "Global ranking",
-      "empty": "No ranking data available yet."
+      "empty": "No ranking data available yet.",
+      "top": "Top {{count}}",
+      "points": "{{points}} pts"
     },
     "statsCard": {
       "title": "Your performance",
@@ -74,7 +77,8 @@
     "title": "Global ranking",
     "subtitle": "Track who is leading the competition.",
     "empty": "No ranking data available yet.",
-    "error": "Unable to load the ranking right now."
+    "error": "Unable to load the ranking right now.",
+    "points": "{{points}} pts"
   },
   "statsScreen": {
     "title": "Your stats",
@@ -85,6 +89,7 @@
     "accuracy": "Accuracy",
     "bestScore": "Best score",
     "avgTime": "Average time",
+    "avgTimeValue": "{{value}} ms",
     "empty": "No stats available yet.",
     "error": "Unable to load your stats right now."
   }

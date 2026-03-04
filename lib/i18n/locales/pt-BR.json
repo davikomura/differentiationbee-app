@@ -48,11 +48,14 @@
       "signOut": "Sair",
       "playNow": "Modo pratica",
       "playHint": "Esse botao ja fica pronto para o proximo passo: iniciar uma sessao com o backend.",
-      "startSession": "Comecar agora"
+      "startSession": "Comecar agora",
+      "ranked": "Ranqueado"
     },
     "ranking": {
       "title": "Ranking global",
-      "empty": "Nenhum dado de ranking disponivel ainda."
+      "empty": "Nenhum dado de ranking disponivel ainda.",
+      "top": "Top {{count}}",
+      "points": "{{points}} pts"
     },
     "statsCard": {
       "title": "Seu desempenho",
@@ -74,7 +77,8 @@
     "title": "Ranking global",
     "subtitle": "Acompanhe quem esta liderando a competicao.",
     "empty": "Nenhum dado de ranking disponivel ainda.",
-    "error": "Nao foi possivel carregar o ranking agora."
+    "error": "Nao foi possivel carregar o ranking agora.",
+    "points": "{{points}} pts"
   },
   "statsScreen": {
     "title": "Suas stats",
@@ -85,6 +89,7 @@
     "accuracy": "Precisao",
     "bestScore": "Melhor pontuacao",
     "avgTime": "Tempo medio",
+    "avgTimeValue": "{{value}} ms",
     "empty": "Nenhuma stat disponivel ainda.",
     "error": "Nao foi possivel carregar suas stats agora."
   }

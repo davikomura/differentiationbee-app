@@ -107,7 +107,9 @@ export default function StatsScreen() {
           />
           <StatCard
             label={t("statsScreen.avgTime")}
-            value={`${stats.average_time_ms} ms`}
+            value={t("statsScreen.avgTimeValue", {
+              value: stats.average_time_ms,
+            })}
           />
         </>
       ) : (
