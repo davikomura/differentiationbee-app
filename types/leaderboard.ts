@@ -1,3 +1,4 @@
+// types/leaderboard.ts
 export type LeaderboardEntry = {
   rank: number;
   user_id: number;

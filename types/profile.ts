@@ -1,3 +1,4 @@
+// types/profile.ts
 export type Tier = {
   key: string;
   min_points: number;

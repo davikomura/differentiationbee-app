@@ -5,8 +5,8 @@ import { Platform } from "react-native";
 const envBaseURL = process.env.EXPO_PUBLIC_API_URL?.trim();
 
 const fallbackHost = Platform.select({
-  android: "192.168.10.7",
-  default: "192.168.10.7",
+  android: "192.168.10.9",
+  default: "192.168.10.9",
 });
 
 const fallbackBaseURL = `http://${fallbackHost}:8000`;
