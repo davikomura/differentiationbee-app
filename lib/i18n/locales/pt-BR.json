@@ -3,27 +3,60 @@
     "login": {
       "title": "Entrar",
       "subtitle": "Acesse sua conta para continuar.",
-      "usernameLabel": "Usuário",
+      "usernameLabel": "Usuario",
       "usernamePlaceholder": "seu.usuario",
       "passwordLabel": "Senha",
       "passwordPlaceholder": "********",
       "button": "Entrar",
-
       "show": "Mostrar",
       "hide": "Ocultar",
       "showPassword": "Mostrar senha",
       "hidePassword": "Ocultar senha",
-
       "forgotPassword": "Esqueceu a senha?",
       "createAccount": "Criar conta",
-
       "alerts": {
         "successTitle": "Login realizado",
-        "successMessage": "Você foi autenticado com sucesso."
+        "successMessage": "Voce foi autenticado com sucesso."
       },
       "errors": {
-        "requiredFields": "Por favor, informe usuário e senha.",
-        "invalidCredentials": "Não foi possível entrar. Verifique suas credenciais."
+        "requiredFields": "Por favor, informe usuario e senha.",
+        "invalidCredentials": "Nao foi possivel entrar. Verifique suas credenciais."
+      },
+      "success": {
+        "registered": "Conta criada. Entre para continuar."
+      }
+    },
+    "register": {
+      "title": "Criar conta",
+      "subtitle": "Cadastre-se para entrar na arena com seu proprio perfil.",
+      "usernameLabel": "Usuario",
+      "usernamePlaceholder": "seu.usuario",
+      "emailLabel": "Email",
+      "emailPlaceholder": "voce@email.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "********",
+      "confirmPasswordLabel": "Confirmar senha",
+      "confirmPasswordPlaceholder": "Repita sua senha",
+      "passwordHint": "Use ao menos 8 caracteres, 1 letra maiuscula e 1 numero.",
+      "passwordStrength": {
+        "label": "Forca da senha: {{level}}",
+        "weak": "fraca",
+        "medium": "media",
+        "strong": "forte"
+      },
+      "button": "Cadastrar",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "haveAccount": "Ja tem uma conta?",
+      "signIn": "Entrar",
+      "errors": {
+        "requiredFields": "Preencha todos os campos.",
+        "usernameLength": "O usuario deve ter entre 3 e 30 caracteres.",
+        "usernameInvalid": "Use apenas letras, numeros, ponto, underline ou hifen.",
+        "emailInvalid": "Informe um email valido.",
+        "passwordWeak": "A senha precisa ter 8 caracteres, uma letra maiuscula e um numero.",
+        "passwordMismatch": "As senhas nao coincidem.",
+        "default": "Nao foi possivel criar sua conta agora."
       }
     }
   },

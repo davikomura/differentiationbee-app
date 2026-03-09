@@ -1,29 +1,62 @@
 {
   "auth": {
     "login": {
-      "title": "Iniciar sesión",
+      "title": "Iniciar sesion",
       "subtitle": "Accede a tu cuenta para continuar.",
       "usernameLabel": "Usuario",
       "usernamePlaceholder": "tu.usuario",
-      "passwordLabel": "Contraseña",
+      "passwordLabel": "Contrasena",
       "passwordPlaceholder": "********",
-      "button": "Iniciar sesión",
-
+      "button": "Iniciar sesion",
       "show": "Mostrar",
       "hide": "Ocultar",
-      "showPassword": "Mostrar contraseña",
-      "hidePassword": "Ocultar contraseña",
-
-      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "showPassword": "Mostrar contrasena",
+      "hidePassword": "Ocultar contrasena",
+      "forgotPassword": "Olvidaste tu contrasena?",
       "createAccount": "Crear cuenta",
-
       "alerts": {
-        "successTitle": "Inicio de sesión exitoso",
+        "successTitle": "Inicio de sesion exitoso",
         "successMessage": "Has sido autenticado correctamente."
       },
       "errors": {
-        "requiredFields": "Por favor, ingresa usuario y contraseña.",
-        "invalidCredentials": "No se pudo iniciar sesión. Verifica tus credenciales."
+        "requiredFields": "Por favor, ingresa usuario y contrasena.",
+        "invalidCredentials": "No se pudo iniciar sesion. Verifica tus credenciales."
+      },
+      "success": {
+        "registered": "Cuenta creada. Inicia sesion para continuar."
+      }
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Registrate para entrar en la arena con tu propio perfil.",
+      "usernameLabel": "Usuario",
+      "usernamePlaceholder": "tu.usuario",
+      "emailLabel": "Correo",
+      "emailPlaceholder": "tu@email.com",
+      "passwordLabel": "Contrasena",
+      "passwordPlaceholder": "********",
+      "confirmPasswordLabel": "Confirmar contrasena",
+      "confirmPasswordPlaceholder": "Repite tu contrasena",
+      "passwordHint": "Usa al menos 8 caracteres, 1 letra mayuscula y 1 numero.",
+      "passwordStrength": {
+        "label": "Fuerza de la contrasena: {{level}}",
+        "weak": "debil",
+        "medium": "media",
+        "strong": "fuerte"
+      },
+      "button": "Crear cuenta",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "haveAccount": "Ya tienes una cuenta?",
+      "signIn": "Iniciar sesion",
+      "errors": {
+        "requiredFields": "Completa todos los campos.",
+        "usernameLength": "El usuario debe tener entre 3 y 30 caracteres.",
+        "usernameInvalid": "Usa solo letras, numeros, punto, guion bajo o guion.",
+        "emailInvalid": "Ingresa un correo valido.",
+        "passwordWeak": "La contrasena debe tener 8 caracteres, una mayuscula y un numero.",
+        "passwordMismatch": "Las contrasenas no coinciden.",
+        "default": "No se pudo crear tu cuenta ahora."
       }
     }
   },

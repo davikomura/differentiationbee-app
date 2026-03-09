@@ -1,6 +1,6 @@
 // app/(auth)/login.tsx
 import { useAuthStore } from "@/stores/auth";
-import { useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
+  KeyboardEvent,
   Platform,
   Pressable,
   ScrollView,
@@ -19,9 +20,15 @@ import {
 export default function AuthLoginScreen() {
   const { t } = useTranslation();
   const router = useRouter();
+  const params = useLocalSearchParams<{
+    registered?: string;
+    username?: string;
+  }>();
   const signIn = useAuthStore((state) => state.signIn);
 
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(
+    typeof params.username === "string" ? params.username : "",
+  );
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,11 +37,13 @@ export default function AuthLoginScreen() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [focusedField, setFocusedField] = useState<
     "username" | "password" | null
   >(null);
 
   const passwordRef = useRef<TextInput>(null);
+  const scrollRef = useRef<ScrollView>(null);
 
   const canSubmit = useMemo(() => {
     return username.trim().length > 0 && password.length > 0 && !loading;
@@ -84,10 +93,35 @@ export default function AuthLoginScreen() {
     return "border-zinc-800/80";
   };
 
+  React.useEffect(() => {
+    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const handleShow = (event: KeyboardEvent) => {
+      setKeyboardHeight(event.endCoordinates.height);
+      requestAnimationFrame(() => {
+        scrollRef.current?.scrollToEnd({ animated: true });
+      });
+    };
+
+    const handleHide = () => {
+      setKeyboardHeight(0);
+    };
+
+    const showSubscription = Keyboard.addListener(showEvent, handleShow);
+    const hideSubscription = Keyboard.addListener(hideEvent, handleHide);
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   return (
     <KeyboardAvoidingView
       className="flex-1 bg-black"
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 24}
     >
       <ImageBackground
         source={require("@/assets/auth/login-bg.png")}
@@ -97,8 +131,18 @@ export default function AuthLoginScreen() {
         <View className="absolute inset-0 bg-black/70" />
 
         <ScrollView
-          contentContainerClassName="flex-grow justify-center px-6 py-10"
+          ref={scrollRef}
+          className="flex-1"
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+            paddingHorizontal: 24,
+            paddingTop: 40,
+            paddingBottom: Math.max(40, keyboardHeight + 48),
+          }}
           keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
         >
           <View className="mb-10 items-start">
             <Text className="text-4xl font-extrabold text-white tracking-tight">
@@ -120,6 +164,14 @@ export default function AuthLoginScreen() {
               elevation: 18,
             }}
           >
+            {params.registered === "1" && (
+              <View className="mb-4 rounded-2xl border border-emerald-400/30 bg-emerald-400/10 p-3">
+                <Text className="text-sm text-emerald-100">
+                  {t("auth.login.success.registered")}
+                </Text>
+              </View>
+            )}
+
             <View className="mb-5">
               <Text className="mb-2 text-sm font-semibold text-zinc-200">
                 {t("auth.login.usernameLabel")}
@@ -239,9 +291,16 @@ export default function AuthLoginScreen() {
                 {t("auth.login.forgotPassword")}
               </Text>
 
-              <Text className="text-sm font-extrabold" style={{ color: CYAN }}>
-                {t("auth.login.createAccount")}
-              </Text>
+              <Link href="/(auth)/register" asChild>
+                <Pressable>
+                  <Text
+                    className="text-sm font-extrabold"
+                    style={{ color: CYAN }}
+                  >
+                    {t("auth.login.createAccount")}
+                  </Text>
+                </Pressable>
+              </Link>
             </View>
           </View>
         </ScrollView>

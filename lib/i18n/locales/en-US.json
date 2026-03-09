@@ -8,15 +8,12 @@
       "passwordLabel": "Password",
       "passwordPlaceholder": "********",
       "button": "Sign in",
-
       "show": "Show",
       "hide": "Hide",
       "showPassword": "Show password",
       "hidePassword": "Hide password",
-
       "forgotPassword": "Forgot password?",
       "createAccount": "Create account",
-
       "alerts": {
         "successTitle": "Login successful",
         "successMessage": "You have been authenticated successfully."
@@ -24,6 +21,42 @@
       "errors": {
         "requiredFields": "Please enter username and password.",
         "invalidCredentials": "Unable to sign in. Check your credentials."
+      },
+      "success": {
+        "registered": "Account created. Sign in to continue."
+      }
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Register to enter the arena with your own profile.",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "your.username",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "********",
+      "confirmPasswordLabel": "Confirm password",
+      "confirmPasswordPlaceholder": "Repeat your password",
+      "passwordHint": "Use at least 8 characters, 1 uppercase letter and 1 number.",
+      "passwordStrength": {
+        "label": "Password strength: {{level}}",
+        "weak": "weak",
+        "medium": "medium",
+        "strong": "strong"
+      },
+      "button": "Create account",
+      "show": "Show",
+      "hide": "Hide",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "errors": {
+        "requiredFields": "Fill in all fields.",
+        "usernameLength": "Username must be between 3 and 30 characters.",
+        "usernameInvalid": "Use only letters, numbers, dot, underscore, or hyphen.",
+        "emailInvalid": "Enter a valid email.",
+        "passwordWeak": "Password must have 8 characters, one uppercase letter, and one number.",
+        "passwordMismatch": "Passwords do not match.",
+        "default": "Unable to create your account right now."
       }
     }
   },
