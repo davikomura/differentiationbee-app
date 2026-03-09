@@ -1,5 +1,6 @@
 // app/_layout.tsx
 import { initI18n } from "@/lib/i18n";
+import { useAuthStore } from "@/stores/auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const [i18nReady, setI18nReady] = useState(false);
+  const hydrateAuth = useAuthStore((state) => state.hydrate);
 
   useEffect(() => {
     let mounted = true;
@@ -32,6 +34,10 @@ export default function RootLayout() {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    void hydrateAuth();
+  }, [hydrateAuth]);
 
   if (!i18nReady) {
     return (

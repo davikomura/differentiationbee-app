@@ -3,9 +3,8 @@ import {
   useGlobalLeaderboard,
   useGlobalLeaderboardByTier,
 } from "@/hooks/useLeaderboard";
-import { getCurrentUser } from "@/services/profile";
+import { useAuthStore } from "@/stores/auth";
 import type { LeaderboardEntry } from "@/types/leaderboard";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -131,11 +130,8 @@ export default function LeaderboardScreen() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [filterMode, setFilterMode] = useState<"global" | "tier">("global");
-  const currentUserQuery = useQuery({
-    queryKey: ["current-user"],
-    queryFn: getCurrentUser,
-  });
-  const currentTier = currentUserQuery.data?.tier;
+  const currentTier = useAuthStore((state) => state.user?.tier);
+  const refreshUser = useAuthStore((state) => state.refreshUser);
   const globalQuery = useGlobalLeaderboard({ limit: 20 });
   const tierQuery = useGlobalLeaderboardByTier(
     filterMode === "tier" ? currentTier?.key ?? "" : "",
@@ -163,9 +159,9 @@ export default function LeaderboardScreen() {
       }}
       refreshControl={
         <RefreshControl
-          refreshing={isRefetching || currentUserQuery.isRefetching}
+          refreshing={isRefetching}
           onRefresh={() => {
-            void Promise.all([refetch(), currentUserQuery.refetch()]);
+            void Promise.all([refetch(), refreshUser()]);
           }}
           tintColor="#19D3FF"
         />

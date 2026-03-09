@@ -1,36 +1,13 @@
 // app/index.tsx
-import { bootstrapAuth } from "@/services/authSession";
+import { useAuthStore } from "@/stores/auth";
 import { Redirect } from "expo-router";
-import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 
 export default function Index() {
-  const [initialHref, setInitialHref] = useState<"/(auth)/login" | "/(tabs)/home" | null>(null);
+  const isHydrated = useAuthStore((state) => state.isHydrated);
+  const status = useAuthStore((state) => state.status);
 
-  useEffect(() => {
-    let mounted = true;
-
-    async function resolveRoute() {
-      try {
-        const tokens = await bootstrapAuth();
-
-        if (!mounted) return;
-        setInitialHref(tokens?.access_token ? "/(tabs)/home" : "/(auth)/login");
-      } catch {
-        if (mounted) {
-          setInitialHref("/(auth)/login");
-        }
-      }
-    }
-
-    resolveRoute();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (!initialHref) {
+  if (!isHydrated || status === "loading") {
     return (
       <View className="flex-1 items-center justify-center bg-black">
         <ActivityIndicator color="#F7C948" />
@@ -38,5 +15,9 @@ export default function Index() {
     );
   }
 
-  return <Redirect href={initialHref} />;
+  return (
+    <Redirect
+      href={status === "authenticated" ? "/(tabs)/home" : "/(auth)/login"}
+    />
+  );
 }

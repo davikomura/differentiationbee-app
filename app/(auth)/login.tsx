@@ -1,5 +1,5 @@
 // app/(auth)/login.tsx
-import { signIn } from "@/services/authSession";
+import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "expo-router";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ import {
 export default function AuthLoginScreen() {
   const { t } = useTranslation();
   const router = useRouter();
+  const signIn = useAuthStore((state) => state.signIn);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

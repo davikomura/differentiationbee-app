@@ -2,11 +2,9 @@
 import { DailyChallengeCard } from "@/components/home/DailyChallengeCard";
 import { StatsGrid } from "@/components/home/StatsGrid";
 import { getDailyChallenge } from "@/services/game";
-import { getCurrentUser } from "@/services/profile";
 import { getMyStats } from "@/services/stats";
-import { loadTokens } from "@/services/tokenStore";
+import { useAuthStore } from "@/stores/auth";
 import type { DailyChallenge } from "@/types/game";
-import type { CurrentUser } from "@/types/profile";
 import type { MyStats } from "@/types/stats";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -22,13 +20,11 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type HomeState = {
-  user: CurrentUser | null;
   dailyChallenge: DailyChallenge | null;
   stats: MyStats | null;
 };
 
 const EMPTY_STATE: HomeState = {
-  user: null,
   dailyChallenge: null,
   stats: null,
 };
@@ -37,6 +33,9 @@ export default function HomeScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const user = useAuthStore((state) => state.user);
+  const authStatus = useAuthStore((state) => state.status);
+  const refreshUser = useAuthStore((state) => state.refreshUser);
 
   const [state, setState] = useState<HomeState>(EMPTY_STATE);
   const [loading, setLoading] = useState(true);
@@ -45,22 +44,20 @@ export default function HomeScreen() {
 
   async function loadHomeData() {
     try {
-      const tokens = await loadTokens();
-
-      if (!tokens?.access_token) {
+      if (authStatus === "unauthenticated") {
         router.replace("/(auth)/login");
         return;
       }
 
       setError(null);
 
-      const [user, dailyChallenge, stats] = await Promise.all([
-        getCurrentUser(),
+      const [, dailyChallenge, stats] = await Promise.all([
+        refreshUser(),
         getDailyChallenge(),
         getMyStats(),
       ]);
 
-      setState({ user, dailyChallenge, stats });
+      setState({ dailyChallenge, stats });
     } catch {
       setError(t("home.errors.loadFailed"));
     } finally {
@@ -70,17 +67,21 @@ export default function HomeScreen() {
   }
 
   useEffect(() => {
-    loadHomeData();
-  }, []);
+    if (authStatus === "loading") {
+      return;
+    }
+
+    void loadHomeData();
+  }, [authStatus]);
 
   async function handleRefresh() {
     setRefreshing(true);
     await loadHomeData();
   }
 
-  const { user, dailyChallenge, stats } = state;
+  const { dailyChallenge, stats } = state;
 
-  if (loading) {
+  if (loading || authStatus === "loading") {
     return (
       <View className="flex-1 items-center justify-center bg-[#070B14]">
         <ActivityIndicator color="#19D3FF" />

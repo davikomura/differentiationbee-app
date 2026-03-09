@@ -1,6 +1,5 @@
 // app/(tabs)/profile.tsx
-import { signOut } from "@/services/authSession";
-import { getCurrentUser } from "@/services/profile";
+import { useAuthStore } from "@/stores/auth";
 import type { CurrentUser } from "@/types/profile";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -26,7 +25,7 @@ type ProfileState = {
 
 const INITIAL_STATE: ProfileState = {
   user: null,
-  loading: true,
+  loading: false,
   refreshing: false,
   signingOut: false,
   error: null,
@@ -156,11 +155,22 @@ export default function ProfileScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const user = useAuthStore((state) => state.user);
+  const authStatus = useAuthStore((state) => state.status);
+  const refreshUser = useAuthStore((state) => state.refreshUser);
+  const signOut = useAuthStore((state) => state.signOut);
   const [state, setState] = useState(INITIAL_STATE);
+
+  useEffect(() => {
+    if (authStatus === "authenticated" && !user) {
+      setState((current) => ({ ...current, loading: true }));
+      void loadProfile();
+    }
+  }, [authStatus, user]);
 
   async function loadProfile() {
     try {
-      const user = await getCurrentUser();
+      const user = await refreshUser();
       setState((current) => ({
         ...current,
         user,
@@ -180,11 +190,6 @@ export default function ProfileScreen() {
     }
   }
 
-  useEffect(() => {
-    void loadProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   async function handleRefresh() {
     setState((current) => ({ ...current, refreshing: true }));
     await loadProfile();
@@ -200,7 +205,9 @@ export default function ProfileScreen() {
     }
   }
 
-  if (state.loading) {
+  const effectiveUser = state.user ?? user;
+
+  if ((state.loading && !effectiveUser) || authStatus === "loading") {
     return (
       <View className="flex-1 items-center justify-center bg-[#050814]">
         <View className="items-center">
@@ -215,12 +222,11 @@ export default function ProfileScreen() {
     );
   }
 
-  const user = state.user;
-  const username = user?.username ?? t("profileScreen.fallbackName");
-  const email = user?.email ?? t("profileScreen.unavailable");
-  const role = user?.role ?? t("profileScreen.unavailable");
-  const points = user?.points ?? 0;
-  const tier = user?.tier?.title ?? t("profileScreen.noTier");
+  const username = effectiveUser?.username ?? t("profileScreen.fallbackName");
+  const email = effectiveUser?.email ?? t("profileScreen.unavailable");
+  const role = effectiveUser?.role ?? t("profileScreen.unavailable");
+  const points = effectiveUser?.points ?? 0;
+  const tier = effectiveUser?.tier?.title ?? t("profileScreen.noTier");
 
   return (
     <ScrollView
