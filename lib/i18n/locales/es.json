@@ -90,9 +90,51 @@
     "tier": "Tier actual",
     "noTier": "Tier no disponible",
     "unavailable": "No disponible",
+    "openSettings": "Abrir configuracion",
+    "settingsEyebrow": "Preferencias",
+    "settingsTitle": "Configuracion",
+    "settingsSubtitle": "Accede a idioma, seguridad y preferencias de la app.",
     "signOut": "Cerrar sesion",
     "signingOut": "Cerrando sesion...",
     "error": "No se pudo cargar tu perfil ahora."
+  },
+  "settingsScreen": {
+    "kicker": "Configuracion",
+    "title": "Configuracion",
+    "subtitle": "Gestiona preferencias de la app y opciones de tu cuenta.",
+    "languageHelp": "Elige el idioma principal de la interfaz. El cambio se guarda en el dispositivo.",
+    "notificationsHelp": "Esta area puede centralizar alertas push, correos y preferencias de recordatorios.",
+    "securityHelp": "Aqui van las acciones sensibles de la cuenta, como cambiar la contrasena y revisar sesiones activas.",
+    "selected": "Seleccionado",
+    "select": "Seleccionar",
+    "items": {
+      "general": {
+        "title": "Abrir configuracion",
+        "description": "Consulta todas las preferencias de la cuenta y de la app."
+      },
+      "language": {
+        "title": "Idioma",
+        "description": "Cambia el idioma mostrado en la app."
+      },
+      "notifications": {
+        "title": "Notificaciones",
+        "description": "Define como y cuando la app puede avisarte."
+      },
+      "security": {
+        "title": "Seguridad",
+        "description": "Cambiar contrasena, revisar sesiones y otras acciones sensibles."
+      }
+    },
+    "placeholders": {
+      "pushTitle": "Alertas push",
+      "pushDescription": "Coloca aqui los controles de permisos del dispositivo y las categorias de notificaciones.",
+      "emailTitle": "Correos",
+      "emailDescription": "Usa esta seccion para correos transaccionales, novedades y recordatorios.",
+      "passwordTitle": "Cambiar contrasena",
+      "passwordDescription": "Esta pantalla es el lugar correcto para conectar el flujo de actualizacion de contrasena con el backend.",
+      "sessionsTitle": "Sesiones activas",
+      "sessionsDescription": "Aqui puedes listar dispositivos conectados y ofrecer cierre remoto."
+    }
   },
   "leaderboardScreen": {
     "title": "Ranking global",

@@ -90,9 +90,51 @@
     "tier": "Tier atual",
     "noTier": "Tier indisponivel",
     "unavailable": "Indisponivel",
+    "openSettings": "Abrir configuracoes",
+    "settingsEyebrow": "Preferencias",
+    "settingsTitle": "Configuracoes",
+    "settingsSubtitle": "Acesse idioma, seguranca e preferencias do aplicativo.",
     "signOut": "Sair da conta",
     "signingOut": "Saindo...",
     "error": "Nao foi possivel carregar seu perfil agora."
+  },
+  "settingsScreen": {
+    "kicker": "Configuracoes",
+    "title": "Configuracoes",
+    "subtitle": "Gerencie preferencias do aplicativo e opcoes da sua conta.",
+    "languageHelp": "Escolha o idioma principal da interface. A alteracao e salva no aparelho.",
+    "notificationsHelp": "Esta area pode concentrar alertas push, emails e preferencias de lembretes.",
+    "securityHelp": "Aqui entram acoes sensiveis da conta, como trocar senha e revisar sessoes ativas.",
+    "selected": "Selecionado",
+    "select": "Selecionar",
+    "items": {
+      "general": {
+        "title": "Abrir configuracoes",
+        "description": "Veja todas as preferencias da conta e do aplicativo."
+      },
+      "language": {
+        "title": "Idioma",
+        "description": "Troque o idioma exibido no app."
+      },
+      "notifications": {
+        "title": "Notificacoes",
+        "description": "Defina como e quando o app pode te avisar."
+      },
+      "security": {
+        "title": "Seguranca",
+        "description": "Trocar senha, revisar sessoes e acoes sensiveis."
+      }
+    },
+    "placeholders": {
+      "pushTitle": "Alertas push",
+      "pushDescription": "Coloque aqui o controle de permissoes e tipos de notificacao enviadas para o dispositivo.",
+      "emailTitle": "Emails",
+      "emailDescription": "Use esta secao para optar por emails transacionais, novidades e lembretes.",
+      "passwordTitle": "Alterar senha",
+      "passwordDescription": "Esta tela e o lugar certo para conectar o fluxo de atualizacao de senha com o backend.",
+      "sessionsTitle": "Sessoes ativas",
+      "sessionsDescription": "Aqui voce pode listar dispositivos conectados e oferecer encerramento remoto."
+    }
   },
   "leaderboardScreen": {
     "title": "Ranking global",

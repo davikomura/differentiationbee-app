@@ -2,6 +2,7 @@
 import { signOut } from "@/services/authSession";
 import { getCurrentUser } from "@/services/profile";
 import type { CurrentUser } from "@/types/profile";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -181,6 +182,7 @@ export default function ProfileScreen() {
 
   useEffect(() => {
     void loadProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleRefresh() {
@@ -237,6 +239,30 @@ export default function ProfileScreen() {
       }
       showsVerticalScrollIndicator={false}
     >
+      <View className="mb-5 flex-row items-center justify-between">
+        <View>
+          <Text className="text-[11px] font-extrabold uppercase tracking-[2px] text-slate-500">
+            {t("profileScreen.kicker")}
+          </Text>
+          <Text className="mt-1 text-2xl font-black text-white">
+            {t("tabs.profile")}
+          </Text>
+        </View>
+
+        <Pressable
+          onPress={() => router.push("/settings")}
+          accessibilityRole="button"
+          accessibilityLabel={t("profileScreen.openSettings")}
+          className="h-12 w-12 items-center justify-center rounded-[18px] border border-white/10 bg-[#0B1220]"
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.9 : 1,
+            transform: [{ scale: pressed ? 0.98 : 1 }],
+          })}
+        >
+          <Ionicons name="settings-sharp" size={20} color="#22D3EE" />
+        </Pressable>
+      </View>
+
       <ProfileHero
         kicker={t("profileScreen.kicker")}
         username={username}

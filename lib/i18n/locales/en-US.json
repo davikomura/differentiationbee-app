@@ -90,9 +90,51 @@
     "tier": "Current tier",
     "noTier": "Tier unavailable",
     "unavailable": "Unavailable",
+    "openSettings": "Open settings",
+    "settingsEyebrow": "Preferences",
+    "settingsTitle": "Settings",
+    "settingsSubtitle": "Access language, security, and app preferences.",
     "signOut": "Sign out",
     "signingOut": "Signing out...",
     "error": "Unable to load your profile right now."
+  },
+  "settingsScreen": {
+    "kicker": "Settings",
+    "title": "Settings",
+    "subtitle": "Manage app preferences and account options.",
+    "languageHelp": "Choose the main interface language. The change is stored on the device.",
+    "notificationsHelp": "This area can centralize push alerts, emails, and reminder preferences.",
+    "securityHelp": "Sensitive account actions belong here, such as changing password and reviewing active sessions.",
+    "selected": "Selected",
+    "select": "Select",
+    "items": {
+      "general": {
+        "title": "Open settings",
+        "description": "See all account and app preferences."
+      },
+      "language": {
+        "title": "Language",
+        "description": "Change the language shown in the app."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Define how and when the app can notify you."
+      },
+      "security": {
+        "title": "Security",
+        "description": "Change password, review sessions, and other sensitive actions."
+      }
+    },
+    "placeholders": {
+      "pushTitle": "Push alerts",
+      "pushDescription": "Place device permission controls and notification categories here.",
+      "emailTitle": "Emails",
+      "emailDescription": "Use this section for transactional emails, product updates, and reminders.",
+      "passwordTitle": "Change password",
+      "passwordDescription": "This screen is the right place to connect a password update flow to the backend.",
+      "sessionsTitle": "Active sessions",
+      "sessionsDescription": "You can list connected devices here and offer remote sign-out."
+    }
   },
   "leaderboardScreen": {
     "title": "Global ranking",
