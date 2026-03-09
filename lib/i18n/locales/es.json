@@ -71,7 +71,28 @@
   "tabs": {
     "home": "Inicio",
     "leaderboard": "Ranking",
-    "stats": "Stats"
+    "stats": "Stats",
+    "profile": "Perfil"
+  },
+  "profileScreen": {
+    "kicker": "Cuenta",
+    "subtitle": "Consulta tus datos principales y gestiona tu sesion.",
+    "fallbackName": "Jugador",
+    "overviewLabel": "Resumen de la cuenta",
+    "progressTitle": "Progreso",
+    "progressSubtitle": "Tu rendimiento y tu posicion competitiva actual.",
+    "accountEyebrow": "Cuenta",
+    "personalInfoTitle": "Informacion personal",
+    "personalInfoSubtitle": "Datos basicos asociados a tu perfil.",
+    "email": "Correo",
+    "role": "Rol de acceso",
+    "points": "Puntos",
+    "tier": "Tier actual",
+    "noTier": "Tier no disponible",
+    "unavailable": "No disponible",
+    "signOut": "Cerrar sesion",
+    "signingOut": "Cerrando sesion...",
+    "error": "No se pudo cargar tu perfil ahora."
   },
   "leaderboardScreen": {
     "title": "Ranking global",

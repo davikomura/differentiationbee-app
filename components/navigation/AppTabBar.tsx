@@ -3,6 +3,26 @@ import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Svg, { Circle, Path } from "react-native-svg";
+
+type TabIconProps = {
+  color: string;
+  size: number;
+};
+
+function ProfileTabIcon({ color, size }: TabIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Circle cx="12" cy="8" r="3.25" stroke={color} strokeWidth="1.8" />
+      <Path
+        d="M5.75 18.25c1.39-2.54 3.58-3.75 6.25-3.75s4.86 1.21 6.25 3.75"
+        stroke={color}
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
 
 export function AppTabBar({
   state,
@@ -33,12 +53,19 @@ export function AppTabBar({
           const inactive = "#7B8AA6";
           const color = isFocused ? active : inactive;
 
-          const icon =
+          const isProfileTab =
+            route.name.toLowerCase() === "profile" ||
+            label.toLowerCase() === "perfil";
+
+          const icon = isProfileTab ? (
+            <ProfileTabIcon color={color} size={22} />
+          ) : (
             options.tabBarIcon?.({
               focused: isFocused,
               color,
               size: 22,
-            }) ?? null;
+            }) ?? null
+          );
 
           const onPress = () => {
             const event = navigation.emit({

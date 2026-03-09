@@ -71,7 +71,28 @@
   "tabs": {
     "home": "Home",
     "leaderboard": "Ranking",
-    "stats": "Stats"
+    "stats": "Stats",
+    "profile": "Profile"
+  },
+  "profileScreen": {
+    "kicker": "Account",
+    "subtitle": "See your main account details and manage your session.",
+    "fallbackName": "Player",
+    "overviewLabel": "Account Overview",
+    "progressTitle": "Progress",
+    "progressSubtitle": "Your performance and current competitive standing.",
+    "accountEyebrow": "Account",
+    "personalInfoTitle": "Personal Information",
+    "personalInfoSubtitle": "Basic data associated with your profile.",
+    "email": "Email",
+    "role": "Access role",
+    "points": "Points",
+    "tier": "Current tier",
+    "noTier": "Tier unavailable",
+    "unavailable": "Unavailable",
+    "signOut": "Sign out",
+    "signingOut": "Signing out...",
+    "error": "Unable to load your profile right now."
   },
   "leaderboardScreen": {
     "title": "Global ranking",
