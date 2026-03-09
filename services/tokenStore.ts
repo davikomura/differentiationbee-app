@@ -1,6 +1,6 @@
 // services/tokenStore.ts
 import * as SecureStore from "expo-secure-store";
-import type { TokenPair } from "./auth";
+import type { TokenPair } from "@/types/auth";
 
 const KEY = "auth_tokens_v1";
 

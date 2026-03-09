@@ -1,6 +1,7 @@
 // services/authSession.ts
 import api, { clearAuthToken, setAuthToken } from "./api";
-import { loginWithTokens, logout, refreshToken, type TokenPair } from "./auth";
+import type { TokenPair } from "@/types/auth";
+import { loginWithTokens, logout, refreshToken } from "./auth";
 import { clearTokens, loadTokens, saveTokens } from "./tokenStore";
 
 let isRefreshing = false;
