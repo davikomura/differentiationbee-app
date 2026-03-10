@@ -2,12 +2,14 @@
 import { DailyChallengeCard } from "@/components/home/DailyChallengeCard";
 import { StatsGrid } from "@/components/home/StatsGrid";
 import { getDailyChallenge } from "@/services/game";
+import { listMySessions, startSession } from "@/services/sessions";
 import { getMyStats } from "@/services/stats";
 import { useAuthStore } from "@/stores/auth";
+import type { AxiosError } from "axios";
 import type { DailyChallenge } from "@/types/game";
 import type { MyStats } from "@/types/stats";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -22,11 +24,17 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 type HomeState = {
   dailyChallenge: DailyChallenge | null;
   stats: MyStats | null;
+  activeSessionId: number | null;
 };
 
 const EMPTY_STATE: HomeState = {
   dailyChallenge: null,
   stats: null,
+  activeSessionId: null,
+};
+
+type ApiErrorResponse = {
+  detail?: string;
 };
 
 export default function HomeScreen() {
@@ -42,7 +50,7 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function loadHomeData() {
+  const loadHomeData = useCallback(async () => {
     try {
       if (authStatus === "unauthenticated") {
         router.replace("/(auth)/login");
@@ -51,20 +59,26 @@ export default function HomeScreen() {
 
       setError(null);
 
-      const [, dailyChallenge, stats] = await Promise.all([
+      const [, dailyChallenge, stats, sessions] = await Promise.all([
         refreshUser(),
         getDailyChallenge(),
         getMyStats(),
+        listMySessions({ limit: 20 }),
       ]);
 
-      setState({ dailyChallenge, stats });
+      const activeSession = sessions.find((session) => session.is_active) ?? null;
+      setState({
+        dailyChallenge,
+        stats,
+        activeSessionId: activeSession?.id ?? null,
+      });
     } catch {
       setError(t("home.errors.loadFailed"));
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
-  }
+  }, [authStatus, refreshUser, router, t]);
 
   useEffect(() => {
     if (authStatus === "loading") {
@@ -72,14 +86,43 @@ export default function HomeScreen() {
     }
 
     void loadHomeData();
-  }, [authStatus]);
+  }, [authStatus, loadHomeData]);
+
+  function goToSession(sessionId: number) {
+    router.push({
+      pathname: "/solo/[id]",
+      params: { id: String(sessionId) },
+    });
+  }
 
   async function handleRefresh() {
     setRefreshing(true);
     await loadHomeData();
   }
 
-  const { dailyChallenge, stats } = state;
+  async function handleStartPracticeSession() {
+    try {
+      const session = await startSession({ mode: "practice" });
+      goToSession(session.id);
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiErrorResponse>;
+      const detail = axiosError.response?.data?.detail ?? "";
+
+      if (axiosError.response?.status === 409) {
+        const sessions = await listMySessions({ limit: 20 });
+        const activeSession = sessions.find((session) => session.is_active);
+
+        if (activeSession) {
+          goToSession(activeSession.id);
+          return;
+        }
+      }
+
+      setError(detail || t("home.errors.sessionStartFailed"));
+    }
+  }
+
+  const { dailyChallenge, stats, activeSessionId } = state;
 
   if (loading || authStatus === "loading") {
     return (
@@ -126,7 +169,7 @@ export default function HomeScreen() {
       <DailyChallengeCard
         t={t}
         dailyChallenge={dailyChallenge}
-        onPress={() => {}}
+        onPress={() => void handleStartPracticeSession()}
       />
 
       {!dailyChallenge ? (
@@ -145,17 +188,19 @@ export default function HomeScreen() {
             <Pressable
               className="h-12 flex-1 items-center justify-center rounded-2xl bg-[#F7C948]"
               style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
-              onPress={() => {}}
+              onPress={() => void handleStartPracticeSession()}
             >
               <Text className="text-[15px] font-black text-[#08111F]">
-                {t("home.actions.startSession")}
+                {activeSessionId
+                  ? t("home.actions.resumeSession")
+                  : t("home.actions.startSession")}
               </Text>
             </Pressable>
 
             <Pressable
               className="h-12 w-28 items-center justify-center rounded-2xl border border-white/10 bg-white/5"
               style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
-              onPress={() => {}}
+              onPress={() => setError(t("home.errors.rankedQueuePending"))}
             >
               <Text className="text-[12px] font-extrabold uppercase tracking-[1.5px] text-cyan-300">
                 {t("home.actions.ranked")}

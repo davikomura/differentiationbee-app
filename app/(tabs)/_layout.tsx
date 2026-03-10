@@ -33,6 +33,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="play"
+        options={{
+          title: t("tabs.play"),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="play" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="stats"
         options={{
           title: t("tabs.stats"),

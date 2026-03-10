@@ -10,6 +10,19 @@ type TabIconProps = {
   size: number;
 };
 
+function PlayTabIcon({ color, size }: TabIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M8 6.75v10.5c0 .95 1.04 1.55 1.88 1.05l8.1-5.25a1.21 1.21 0 0 0 0-2.1l-8.1-5.25A1.22 1.22 0 0 0 8 6.75Z"
+        stroke={color}
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
 function ProfileTabIcon({ color, size }: TabIconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -56,15 +69,18 @@ export function AppTabBar({
           const isProfileTab =
             route.name.toLowerCase() === "profile" ||
             label.toLowerCase() === "perfil";
+          const isPlayTab = route.name.toLowerCase() === "play";
 
           const icon = isProfileTab ? (
             <ProfileTabIcon color={color} size={22} />
+          ) : isPlayTab ? (
+            <PlayTabIcon color={color} size={22} />
           ) : (
-            options.tabBarIcon?.({
+            (options.tabBarIcon?.({
               focused: isFocused,
               color,
               size: 22,
-            }) ?? null
+            }) ?? null)
           );
 
           const onPress = () => {
